@@ -19,6 +19,10 @@ java() {
 
     cd ${PWD_DIR}
     cd ../web/
+	
+    mkdir ./src/main/resourcesback/
+    cp ./src/main/resources/*.* ./src/main/resourcesback/	
+	
     sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl ./src/main/resources/*`
     sed -i "s/registry1.tars.com/${MachineIp}/g" `grep registry1.tars.com -rl ./src/main/resources/*`
     sed -i "s/registry2.tars.com/${MachineIp}/g" `grep registry2.tars.com -rl ./src/main/resources/*`
@@ -30,6 +34,11 @@ java() {
     mkdir -p /data/log/tars/
     cp ./conf/resin.xml /usr/local/resin/conf/
     /usr/local/resin/bin/resin.sh start
+	
+    cd ${PWD_DIR}
+    cd ../web/
+    cp ./src/main/resourcesback/* ./src/main/resources/ -f
+    rm -rf ./src/main/resourcesback
 }
 
 cpp() {    
