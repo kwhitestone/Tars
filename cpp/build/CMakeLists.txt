@@ -15,7 +15,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2 -Wall -Wno-deprecated")
 set(TARS_VERSION "1.0.1")
 add_definitions(-DTARS_VERSION="${TARS_VERSION}")
 
-set(INSTALL_PREFIX "/usr/local/tars/cpp")
+set(INSTALL_PREFIX "../../develop/")
 
 set(CMAKE_INSTALL_PREFIX ${INSTALL_PREFIX})
 

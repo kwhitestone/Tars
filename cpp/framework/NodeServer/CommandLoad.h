@@ -133,13 +133,18 @@ inline int CommandLoad::execute(string& sResult)
 
     //若exePath不合法采用默认路径
     //注意java服务启动方式特殊 可执行文件为java 须特殊处理
+    //增加isomerism（异构）服务， 使用 ServerStarter 来启动
     if (_exePath.empty())
     {
         _exePath =  _serverDir + "/bin/";
         if (_serverType == "tars_java")
         {
             _exeFile = "java";
-        }                      
+        }   
+        else if (_serverType == "tars_isomerism")                   
+        {
+            _exeFile = _exePath + "ServerStarter";
+        }
         else
         {
             _exeFile = _exePath + _desc.serverName; 

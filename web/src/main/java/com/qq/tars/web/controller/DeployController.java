@@ -64,6 +64,7 @@ public class DeployController extends WrappedController {
         return new LinkedList<String>() {{
             add("tars_cpp");
             add("tars_java");
+            add("tars_isomery");
         }};
     }
 
