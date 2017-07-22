@@ -42,6 +42,7 @@ java() {
 }
 
 cpp() {    
+    yum install glibc-devel flex bison -y
     cd ../cpp/build/
     find ./ -name "*.sh" | xargs dos2unix 
     chmod u+x build.sh
