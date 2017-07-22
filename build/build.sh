@@ -42,29 +42,39 @@ java() {
 }
 
 cpp() {    
-    yum install glibc-devel flex bison -y
+    cd ${PWD_DIR}
+    rm ../deploy/ -rf
+    yum install glibc-devel flex bison dos2unix -y
     cd ../cpp/build/
     find ./ -name "*.sh" | xargs dos2unix 
     chmod u+x build.sh
     ./build.sh all
     ./build.sh install
-    cd -
-
+    
+    cd ${PWD_DIR}    
     cd ../cpp/build/
-    make framework-tar
+    make framework-tar 
     make tarsstat-tar
     make tarsnotify-tar
     make tarsproperty-tar
     make tarslog-tar
     make tarsquerystat-tar
     make tarsqueryproperty-tar
-    cd -
-
-    mkdir -p ../deploy/    
-    cp ../cpp/build/framework.tgz ../deploy/
-    cd ../deploy/
+    
+    cd ${PWD_DIR}
+    mkdir -p ../deploy/
+    cd ../cpp/build/framework/deploy/
+    rm ../../framework.tgz -f
+    tar czfv ../../framework.tgz tars_install.sh tarsnode_install.sh tarsnode tarsregistry tarsAdminRegistry tarspatch tarsconfig    
+    
+    
+    cd ${PWD_DIR}
+    cp ../cpp/build/*.tgz ../deploy/
+    cp ../cpp/build/framework.tgz /usr/local/app/tars/
+    
+    cd /usr/local/app/tars/
     tar xzfv framework.tgz
-
+    
     sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl ./*`
     sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl ./*`
     sed -i "s/registry.tars.com/${MachineIp}/g" `grep registry.tars.com -rl ./*`
