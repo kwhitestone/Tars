@@ -141,7 +141,7 @@ inline int CommandLoad::execute(string& sResult)
         {
             _exeFile = "java";
         }   
-        else if (_serverType == "tars_isomerism")                   
+        else if (_serverType == "not_tars")                   
         {
             _exeFile = _exePath + "ServerStarter";
         }
