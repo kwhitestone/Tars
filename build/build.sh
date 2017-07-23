@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PWD_DIR=`pwd`
-MachineIp=192.168.137.101
+MachineIp=$2
 MachineName=
 
 depend() {
@@ -69,6 +69,7 @@ cpp() {
     
     
     cd ${PWD_DIR}
+    mkdir -p /usr/local/app/tars/
     cp ../cpp/build/*.tgz ../deploy/
     cp ../cpp/build/framework.tgz /usr/local/app/tars/
     
@@ -86,6 +87,19 @@ cpp() {
     ./tarspatch/util/init.sh
 }
 
-
+initsql() {
+    mysql -uroot -proot@appinside -e "grant all on *.* to 'tars'@'%' identified by 'tars2015' with grant option;"
+    mysql -uroot -proot@appinside -e "grant all on *.* to 'tars'@'localhost' identified by 'tars2015' with grant option;"
+    mysql -uroot -proot@appinside -e "grant all on *.* to 'tars'@'${MachineName}' identified by 'tars2015' with grant option;"
+    mysql -uroot -proot@appinside -e "flush privileges;"
+    cp -r ../cpp/framework/sql/ ./
+    cd sql
+    sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl ./*`
+    sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl ./*`
+    chmod u+x exec-sql.sh
+    ./exec-sql.sh
+    cd ../
+    rm -rf sql
+}
 
 $1
