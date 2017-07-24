@@ -133,7 +133,7 @@ inline int CommandLoad::execute(string& sResult)
 
     //若exePath不合法采用默认路径
     //注意java服务启动方式特殊 可执行文件为java 须特殊处理
-    //增加isomerism（异构）服务， 使用 ServerStarter 来启动
+    //对于not_tars类型的服务， 使用 ServerStarter 来启动
     if (_exePath.empty())
     {
         _exePath =  _serverDir + "/bin/";
@@ -143,7 +143,7 @@ inline int CommandLoad::execute(string& sResult)
         }   
         else if (_serverType == "not_tars")                   
         {
-            _exeFile = _exePath + "ServerStarter";
+            _exeFile = _exePath + "ServiceStarter";
         }
         else
         {
@@ -201,6 +201,13 @@ inline int CommandLoad::execute(string& sResult)
     _confPath      = _serverDir + "/conf/";
 
     _confFile      = _confPath + _desc.application + "." + _desc.serverName + ".config.conf";
+
+    if ("not_tars"==_serverType) {
+        string sStopScript = "ps -ef | grep " + _serverDir + " | grep -v grep | kill -9 `awk '{print $2}'`";
+        TC_File::save2file(_exePath + "/tars_stop.sh", sStopScript);
+        TC_File::setExecutable(_exePath + "/tars_stop.sh", true);
+        _stopScript = _exePath + "/tars_stop.sh";
+    }
 
     TLOGDEBUG("CommandLoad::execute"<< _serverType   << "," 
                 << "exe_path="      << _exePath      << "," 

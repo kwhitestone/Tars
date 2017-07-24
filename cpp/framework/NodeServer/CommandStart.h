@@ -300,7 +300,7 @@ inline int CommandStart::execute(string& sResult)
 
         if (!_serverObjectPtr->getStartScript().empty() || _serverObjectPtr->isTarsServer() == false)
         {
-            bSucc = startByScript(sResult);
+            bSucc = startNormal(sResult);//startByScript(sResult);
         }
         else
         {

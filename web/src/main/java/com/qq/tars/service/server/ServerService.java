@@ -21,6 +21,8 @@ import com.qq.tars.db.AdapterMapper;
 import com.qq.tars.db.ServerMapper;
 import com.qq.tars.entity.AdapterConf;
 import com.qq.tars.entity.ServerConf;
+import com.qq.tars.generated.tars.ConfigInfo;
+import com.qq.tars.service.config.AddConfigFile;
 import com.qq.tars.service.config.ConfigService;
 import com.qq.tars.tools.DateTime;
 import org.apache.commons.lang3.StringUtils;
@@ -80,6 +82,40 @@ public class ServerService {
         configService.addDefaultNodeConfigFile(serverConf.getApplication(), serverConf.getServerName(),
                 serverConf.getNodeName(), "Y".equals(serverConf.getEnableSet()), serverConf.getSetName(),
                 serverConf.getSetArea(), serverConf.getSetGroup());
+
+        // 对于not_tars服务，增加默认配置文件
+        if (deployServer.getServerType().equals("not_tars")) {
+            String objName = "";
+            if (adapters.size()>0) {
+                objName = adapters.get(0).getObjName();
+            }
+            String file =
+                    "<tars>\n" +
+                    "   <servicestarter>\n" +
+                    "       #exe 表示可执行文件， 不填表示使用ServerName\n" +
+                    "       exe = \n" +
+                    "       #param 表示启动exe的参数 , 比如填上 -c {srsconfig} ， 表示启动参数是 -c srsconfig, srsconfig为另外一个配置文件\n" +
+                    "       param = \n" +
+                    "       #servant 为查询此服务信息的tars接口名\n" +
+                    "       servant = "+objName+"\n" +
+                    "       #info 为可以本服务的信息， json 格式 ， 注意查询时会被自动加上 \"ip\" 字段以表示本机ip \n" +
+                    "       info = {\"port\": 0}\n" +
+                    "   </servicestarter>\n" +
+                    "</tars>";
+
+            AddConfigFile conf = new AddConfigFile();
+            conf.setApplication(deployServer.getApplication());
+            conf.setConfig(file);
+            conf.setFilename(deployServer.getApplication() + "." + deployServer.getServerName() + ".service");
+            conf.setLevel(5);
+            conf.setServerName(deployServer.getServerName());
+            conf.setSetName(deployServer.getSetName());
+            conf.setNodeName(deployServer.getNodeName());
+            conf.setSetArea(deployServer.getSetArea());
+            conf.setSetGroup(deployServer.getSetGroup());
+            configService.addConfigFile(conf);
+        }
+
         return serverConf;
     }
 

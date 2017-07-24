@@ -170,6 +170,10 @@ public class ConfigService {
         }
         ConfigFile configFile = configMapper.loadConfigFile(id);
 
+//        if (configFile.getLevel()==2 && configFile.getFilename().equals(configFile.getServerName() + ".service")) {
+//            throw new DBConsistencyException("默认配置文件，不能删除");
+//        }
+
         // 删除同名节点配置
         if (configFile.getLevel() == 2) {
             String[] tokens = StringUtils.split(configFile.getServerName(), "\\.");

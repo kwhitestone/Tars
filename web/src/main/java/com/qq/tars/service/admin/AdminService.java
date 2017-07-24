@@ -85,7 +85,7 @@ public class AdminService {
             log.info("server={}, filename={}, host={}, result={}", server, filename, host, holder.getValue());
             return holder.getValue();
         } else {
-            throw new TARSRequestException(ret);
+            throw new TARSRequestException(ret + "," + holder.getValue());
         }
     }
 
