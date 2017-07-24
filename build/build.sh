@@ -54,6 +54,7 @@ cpp() {
     rm ../deploy/ -rf
     yum install glibc-devel flex bison dos2unix -y
     cd ../cpp/build/
+    rm *.tgz -f
     find ./ -name "*.sh" | xargs dos2unix 
     chmod u+x build.sh
     ./build.sh all
@@ -72,6 +73,7 @@ cpp() {
     echo "buildframework.............."
     cd ${PWD_DIR}
     mkdir -p ../deploy/
+    cp init.sh ../deploy/
     cd ../cpp/build/framework/deploy/
     rm ../../framework.tgz -f
     tar czfv ../../framework.tgz tars_install.sh tarsnode_install.sh tarsnode tarsregistry tarsAdminRegistry tarspatch tarsconfig    
