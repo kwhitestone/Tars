@@ -26,10 +26,10 @@ java() {
 
     cd ${PWD_DIR}
     cd ../web/
-	
+    
     mkdir ./src/main/resourcesback/
     cp ./src/main/resources/*.* ./src/main/resourcesback/	
-	
+    
     sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl ./src/main/resources/*`
     sed -i "s/registry1.tars.com/${MachineIp}/g" `grep registry1.tars.com -rl ./src/main/resources/*`
     sed -i "s/registry2.tars.com/${MachineIp}/g" `grep registry2.tars.com -rl ./src/main/resources/*`
@@ -41,7 +41,7 @@ java() {
     mkdir -p /data/log/tars/
     cp ./conf/resin.xml /usr/local/resin/conf/
     /usr/local/resin/bin/resin.sh restart
-	
+    
     cd ${PWD_DIR}
     cd ../web/
     cp ./src/main/resourcesback/* ./src/main/resources/ -f
@@ -74,10 +74,14 @@ cpp() {
     cd ${PWD_DIR}
     mkdir -p ../deploy/
     cp init.sh ../deploy/
+    
+    mkdir -p ../deploy/sql
+    cp -r ../cpp/framework/sql/ ../deploy/sql
+    cd ../deploy/ 
+    tar czvf sql.tgz sql
     cd ../cpp/build/framework/deploy/
     rm ../../framework.tgz -f
     tar czfv ../../framework.tgz tars_install.sh tarsnode_install.sh tarsnode tarsregistry tarsAdminRegistry tarspatch tarsconfig    
-    
     
     echo "copyframewrok.............."
     cd ${PWD_DIR}
