@@ -17,10 +17,10 @@ yum install -y dos2unix rsync
 #copy 
 mkdir -p /usr/local/app/tars/
 cp framework.tgz tarsweb.tgz sql.tgz /usr/local/app/tars/
+cd /usr/local/app/tars/
 
 #java web
 web() {    
-    cd /usr/local/app/tars/
     tar -zxvf tarsweb.tgz
     sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl ./tarsweb/*`
     sed -i "s/registry1.tars.com/${MachineIp}/g" `grep registry1.tars.com -rl ./tarsweb/*`
@@ -57,7 +57,7 @@ framework(){
     ps -ef | grep tars | grep -v grep | kill -9 `awk '{print $2}'`
     tar -zxvf framework.tgz
     rm -rf app_log
-    rm -rf remote_app_log	
+    rm -rf remote_app_log
     sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl ./* |grep -v "\\./init\\.sh" `
     sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl ./* |grep -v "\\./init\\.sh" `
     sed -i "s/registry.tars.com/${MachineIp}/g" `grep registry.tars.com -rl ./* |grep -v "\\./init\\.sh" `
