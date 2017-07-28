@@ -93,4 +93,5 @@ buildall() {
 
 $1
 cd ${PWD_DIR}
-mv ../deploy/ ../../ -f
+mv ../deploy/* ../../deploy/ -f
+rm ../deploy/ -r
