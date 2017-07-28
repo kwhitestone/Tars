@@ -31,7 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
@@ -48,8 +48,8 @@ public class AdminService {
     public AdminService() {
         String path = null;
         try {
-            path = new ClassPathResource("tars.conf").getFile().getCanonicalPath();
-
+            //path = new ClassPathResource("tars.conf").getFile().getCanonicalPath();
+            path = new FileSystemResource("/usr/local/app/tars/tarsweb/tars.conf").getFile().getCanonicalPath();
             CommunicatorConfig cfg = new CommunicatorConfig();
             cfg.load(Config.parseFile(path, Charset.forName("UTF-8")));
             communicator = CommunicatorFactory.getInstance().getCommunicator(cfg);

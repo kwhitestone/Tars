@@ -27,7 +27,7 @@
        http://www.springframework.org/schema/task/spring-task.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:app.config.properties"/>
+        <property name="location" value="file:/usr/local/app/tars/tarsweb/app.config.properties"/>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
         <property name="ignoreResourceNotFound" value="true"/>
     </bean>

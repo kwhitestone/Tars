@@ -18,7 +18,7 @@ package com.qq.tars.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class SystemConfigService {
     private final Logger log = LoggerFactory.getLogger(SystemConfigService.class);
 
     public String getUploadTgzPath() {
-        Resource resource = new ClassPathResource("/app.config.properties");
+        Resource resource = new FileSystemResource("/usr/local/app/tars/tarsweb/app.config.properties");
         Properties props;
         try {
             props = PropertiesLoaderUtils.loadProperties(resource);
