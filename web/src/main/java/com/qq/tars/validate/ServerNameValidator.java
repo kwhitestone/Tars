@@ -30,7 +30,8 @@ public class ServerNameValidator implements ConstraintValidator<ServerName, Stri
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return StringUtils.isNotBlank(value) && StringUtils.isAlphanumeric(value) && CharUtils.isAsciiAlpha(value.charAt(0));
+        return value.matches("[a-zA-Z][a-zA-Z0-9_]+");
+        //return StringUtils.isNotBlank(value) && StringUtils.isAlphanumeric(value) && CharUtils.isAsciiAlpha(value.charAt(0));
     }
 
 

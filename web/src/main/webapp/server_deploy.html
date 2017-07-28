@@ -224,7 +224,7 @@
             showErrorMsg($('#main_title'),'服务名不能为空');
             return;
         }
-        if(!/^[a-zA-Z]([a-zA-Z0-9])+$/g.test(paramObj.server_name)){
+        if(!/^[a-zA-Z]([a-zA-Z0-9_])+$/g.test(paramObj.server_name)){
             showErrorMsg($('#main_title'),'服务名只能包含英文字母，数字，并以字母开头');
             return;
         }
