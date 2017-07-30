@@ -14,6 +14,7 @@ MachineIp=$2
 MachineName=
 
 mkdir -p ../deploy/
+mkdir -p ../../deploy/
 cp init.sh ../deploy/
 
 depend() {
