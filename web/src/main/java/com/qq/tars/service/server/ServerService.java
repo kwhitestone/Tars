@@ -20,7 +20,9 @@ import com.google.common.base.Preconditions;
 import com.qq.tars.db.AdapterMapper;
 import com.qq.tars.db.ServerMapper;
 import com.qq.tars.entity.AdapterConf;
+import com.qq.tars.entity.ConfigFile;
 import com.qq.tars.entity.ServerConf;
+import com.qq.tars.exception.DBConsistencyException;
 import com.qq.tars.generated.tars.ConfigInfo;
 import com.qq.tars.service.config.AddConfigFile;
 import com.qq.tars.service.config.ConfigService;
@@ -92,6 +94,10 @@ public class ServerService {
             String file =
                     "<tars>\n" +
                     "   <servicestarter>\n" +
+                    "       #precmd 表示开始启动程序之前执行的命令， 以 && 分隔，如 rpm -ivh xxx.rpm && sleep 10\n" +
+                    "       precmd = \n" +
+                    "       #env 表示程序启动时要设置的环境变量， 以 && 分隔， 如 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./libs/ && LOGPATH=/data/log/\n" +
+                    "       env = \n" +
                     "       #exe 表示可执行文件， 不填表示使用ServerName\n" +
                     "       exe = \n" +
                     "       #param 表示启动exe的参数 , 比如填上 -c {srsconfig} ， 表示启动参数是 -c srsconfig, srsconfig为另外一个配置文件\n" +
@@ -113,6 +119,23 @@ public class ServerService {
             conf.setNodeName(deployServer.getNodeName());
             conf.setSetArea(deployServer.getSetArea());
             conf.setSetGroup(deployServer.getSetGroup());
+
+            List<ConfigFile> serverconfigs =
+            configService.getServerConfigFile(
+                    deployServer.getApplication(),
+                    deployServer.getServerName(),
+                    deployServer.getSetName(),
+                    deployServer.getSetArea(),
+                    deployServer.getSetGroup());
+            for (ConfigFile confFile : serverconfigs) {
+                if (confFile.getFilename().equals(conf.getFilename())) {
+                    try {
+                        configService.deleteConfigFile(confFile.getId());
+                    } catch (DBConsistencyException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             configService.addConfigFile(conf);
         }
 
